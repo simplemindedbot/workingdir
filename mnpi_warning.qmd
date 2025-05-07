@@ -1,40 +1,22 @@
-Certainly. Here’s the same user story, rewritten from the Product Owner’s perspective, with a focus on why the change is being prioritized and what outcome it’s expected to achieve:
+Feature: MNPI Compliance Warning on Generate New Analysis Tab
 
-⸻
+  As the Product Owner for CBCI,
+  I want users to see a visible warning about MNPI compliance
+  So that we reduce the risk of noncompliant analysis generation
 
-User Story
-Title: Add MNPI Compliance Warning to “Generate New Analysis” Tab
-As the Product Owner for CBCI,
-I want a clear and prominently displayed warning message added to the “Generate New Analysis” tab,
-So that we reduce the risk of users inadvertently generating analyses that involve MNPI-flagged transactions and reinforce our regulatory compliance posture.
+  Scenario: Display MNPI warning on Generate New Analysis tab
+    Given the user navigates to the "Generate New Analysis" tab
+    Then a warning message is displayed at the top of the page
+    And the message reads:
+      """
+      Warning: CBCI must not be used to generate any analysis related to an MNPI-flagged transaction. All users are responsible for ensuring compliance with conflicts clearance policies before proceeding.
+      """
+    And the warning is visually styled to stand out (e.g., red border, bold font, or warning icon)
 
-⸻
+  Scenario: Warning is always shown to all users
+    Given any user accesses the "Generate New Analysis" tab
+    Then the MNPI warning message is shown regardless of transaction context or metadata
 
-Background / Rationale:
-Our users interact with transaction data that may be subject to conflicts clearance requirements under MNPI policies. Currently, there is no in-app reminder to prevent the generation of analyses involving MNPI, which creates unnecessary compliance exposure. This story addresses that gap by embedding a clear, non-dismissible warning at the point of analysis generation.
-
-⸻
-
-Acceptance Criteria:
-	1.	Display and Location:
-	•	A persistent warning message must be shown at the top of the “Generate New Analysis” tab as soon as the user lands on the screen.
-	2.	Message Text:
-	•	The message should read:
-Warning: CBCI must not be used to generate any analysis related to an MNPI-flagged transaction. All users are responsible for ensuring compliance with conflicts clearance policies before proceeding.
-	3.	Visual Design:
-	•	The message should be clearly distinguishable from the rest of the UI (e.g., red outline, bolded header, warning icon), signaling its criticality.
-	4.	Universal Visibility:
-	•	The warning should be displayed unconditionally to all users on the tab, regardless of transaction metadata, as we currently do not have dynamic flagging enforcement in place.
-	5.	Audit Logging (if feasible):
-	•	User views of this warning should be logged with a timestamp and user ID to support audit trail requirements.
-
-⸻
-
-Value / Outcome:
-	•	Promotes responsible tool usage by end users
-	•	Demonstrates proactive regulatory alignment
-	•	Reduces risk of data misuse or compliance violations
-
-⸻
-
-Let me know if you’d like to break this into epic/subtasks or include dependencies or Jira field mappings.
+  Scenario: Audit logging of warning display (if implemented)
+    Given the warning is displayed
+    Then the system logs the display event with timestamp and user ID
