@@ -1,0 +1,17 @@
+To ensure we comply with regulatory requirements and internal policy around Material Nonpublic Information (MNPI), we are implementing a centralized approach to identify and control the inclusion of MNPI-flagged data in client analyses.
+
+  
+
+Currently, data on whether a loan or transaction is MNPI-flagged resides in RV/CRM and is updated nightly. Deal package data originates in nCino, and user access is governed by entitlements managed in CBCI.
+
+  
+
+Our goal is to:
+
+- Prevent users from unintentionally including MNPI content in an analysis.
+- Ensure that all CBCI workflows (viewing, initiating, editing, or accessing via links) consistently check for MNPI exposure.
+- Prepare for future functionality that allows users with appropriate entitlements to access MNPI content, including proper logging, auditing, and optional justification.
+
+  
+
+This approach will be implemented in a way that is centralized, maintainable, and extensible. The system will not hard-code logic in each workflow. Instead, it will rely on a common function that checks whether any component of a deal package is MNPI-flagged and whether the current user is permitted to view it.
