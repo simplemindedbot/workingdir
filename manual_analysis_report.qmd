@@ -1,0 +1,96 @@
+# User Story: Export Analyses Report with Metadata and Filter Options
+
+**Title**: CBCI Admin: Export Analyses Report (With Full Metadata and Filters)
+
+**As a** CBCI admin user  
+**I want** to be able to download a structured report containing a selected set of analyses, each with detailed metadata and evaluation fields  
+**So that** I can fulfill internal reporting, quality monitoring, and compliance audit needs with minimal manual effort
+
+---
+
+## Acceptance Criteria (Gherkin Style)
+
+```gherkin
+Feature: Export analyses report with full metadata
+
+  Scenario: Export a filtered set of analyses with selected metadata fields
+    Given I am logged into the CBCI admin console
+    And I am on the “Analysis Export” screen
+    When I specify filters including:
+      | Filter                         |
+      | Date Range                     |
+      | WCIS ID                        |
+      | Optimist ID                    |
+      | Requesting User ID             |
+      | Analysis Status                |
+      | Entity Name                    |
+    And I choose whether to:
+      | Option                               |
+      | Include only the most recent revision|
+      | Include all revisions                |
+      | Include LLM raw JSON (Yes/No)        |
+    And I select the output format (CSV or JSON)
+    Then I should receive a downloadable file containing the selected analyses
+    And each analysis record in the file should include the following fields:
+      | Field Name                                                |
+      | Analysis Date                                             |
+      | Analysis Date/Time                                        |
+      | Analysis ID                                               |
+      | Analysis Revision ID                                      |
+      | WCIS ID                                                   |
+      | Entity Name                                               |
+      | Optimist ID                                               |
+      | Requesting User ID                                        |
+      | Requesting User Name (Last, First)                        |
+      | Requesting User Email                                     |
+      | Requesting User AU                                        |
+      | Request Timestamp                                         |
+      | Requesting User CBCI Role                                 |
+      | Analysis Status                                           |
+      | Time of Entity Selection                                  |
+      | Time of Generate Report                                   |
+      | Time Prompt Sent to LLM                                   |
+      | Time LLM Response Received                                |
+      | Time of Initial Edit                                      |
+      | Time of Final Edit                                        |
+      | Data Sources (Count)                                      |
+      | Areas of Attention Metric Accuracy Rating                 |
+      | Areas of Attention Metric Accuracy Category               |
+      | Areas of Attention Metric Accuracy Free Form Comments     |
+      | Areas of Attention Materiality Rating                     |
+      | Areas of Attention Materiality Category                   |
+      | Areas of Attention Materiality Free Form Comments         |
+      | Areas of Attention Overall Comments                       |
+      | Financial Analysis Income Statement Metric Accuracy Rating|
+      | Financial Analysis Income Statement Metric Accuracy Category|
+      | Financial Analysis Income Statement Metric Accuracy Comments|
+      | Financial Analysis Income Statement Completeness Rating   |
+      | Financial Analysis Income Statement Completeness Category |
+      | Financial Analysis Income Statement Completeness Comments |
+      | Financial Analysis Balance Sheet Completeness Rating      |
+      | Financial Analysis Balance Sheet Completeness Category    |
+      | Financial Analysis Balance Sheet Completeness Comments    |
+      | Financial Analysis Cash Flow Completeness Rating          |
+      | Financial Analysis Cash Flow Completeness Category        |
+      | Financial Analysis Cash Flow Completeness Comments        |
+      | Financial Analysis Overall Comments                       |
+      | Areas of Attention Character Count                        |
+      | Financial Analysis Original Version Character Count       |
+      | Financial Analysis Editable Version Character Count       |
+      | Overall Satisfaction Rating                               |
+      | Balance Sheet Factual Accuracy                            |
+      | Balance Sheet Completeness                                |
+      | Balance Sheet Hallucination                               |
+      | Income Statement Factual Accuracy                         |
+      | Income Statement Completeness                             |
+      | Income Statement Hallucination                            |
+      | Cash Flow Factual Accuracy                                |
+      | Cash Flow Completeness                                    |
+      | Cash Flow Hallucination                                   |
+      | Areas of Attention Factual Accuracy                       |
+      | Areas of Attention Completeness                           |
+      | Areas of Attention Hallucination                          |
+      | Industry Analysis Factual Accuracy                        |
+      | Industry Analysis Completeness                            |
+      | Industry Analysis Hallucination                           |
+    And the file should be named using the format: `CBCI_AnalysesReport_<YYYYMMDD_HHMMSS>.<csv|json>`
