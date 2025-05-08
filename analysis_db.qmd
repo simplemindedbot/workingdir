@@ -1,0 +1,117 @@
+Here is a preliminary set of user stories based on the provided text. These stories are grouped by function to support export utility development, metrics field mapping, JSON file ingestion, and future enhancements.
+
+⸻
+
+EPIC: Enable Export and Analysis of CBCI Metrics Data
+
+⸻
+
+Feature 1: Develop Basic Export Utility
+
+User Story 1.1: Export Metrics Dataset to File
+
+As a data analyst
+I want the ability to export the metrics data to a structured file format (e.g., CSV or JSON)
+So that I can easily review, analyze, and monitor data quality and trends during UAT.
+
+Acceptance Criteria (Gherkin):
+
+Given the CBCI metrics data is available in the application
+When the user selects "Export Dataset"
+Then a downloadable CSV or JSON file is generated
+And it includes all defined metric fields
+And the export is completed within 30 seconds
+
+User Story 1.2: Schedule Regular Exports
+
+As a product owner
+I want the metrics export utility to support scheduled daily runs
+So that downstream analytics pipelines can consume the latest data without manual intervention.
+
+⸻
+
+Feature 2: Map Metrics Fields to Database Targets
+
+User Story 2.1: Map Analysis Metadata Fields
+
+As a developer
+I want the following fields mapped to the analytics database: Analysis Date, Analysis ID, Revision ID, User ID, Username, Entity Name, WCIS ID
+So that they can be referenced in dashboards and data lineage tracking.
+
+User Story 2.2: Map Processing Metrics
+
+As a data engineer
+I want to capture and store processing time segments (extraction, Tachyon call, assertion routine, total duration)
+So that I can diagnose performance bottlenecks.
+
+⸻
+
+Feature 3: Include Areas of Attention and Financial Metrics
+
+User Story 3.1: Store and Export Accuracy and Materiality Ratings
+
+As a compliance reviewer
+I want to include fields related to Accuracy, Materiality, Free Form Comments, and Overall Ratings
+So that qualitative and quantitative review feedback is captured and auditable.
+
+User Story 3.2: Capture Financial Analysis Comments and Character Counts
+
+As a data scientist
+I want the system to track both editable and original version character counts
+So that I can analyze reviewer impact and verbosity across documents.
+
+⸻
+
+Feature 4: JSON File Consumption (Future Phase)
+
+User Story 4.1: Ingest Transaction-Level JSON Files
+
+As a data scientist
+I want the system to ingest JSON files associated with transactions
+So that I can perform deeper analysis of the raw structured output.
+
+User Story 4.2: Link JSON Files to Analysis Records
+
+As a developer
+I want to associate each JSON file with its corresponding Analysis ID and Revision ID
+So that analysts can quickly trace metric summaries to raw data.
+
+⸻
+
+Feature 5: Placeholder for In-App Enhancements
+
+User Story 5.1: Add Assertion Result Field to Dataset
+
+As a developer
+I want to add support for storing and exporting assertion result data
+So that completeness and accuracy checks can be traced post-generation.
+
+User Story 5.2: Add Overall Satisfaction Rating
+
+As a product manager
+I want to capture an overall satisfaction rating from end users
+So that we can assess the perceived quality and utility of the generated analysis.
+
+⸻
+
+Feature 6: Stakeholder Alignment and Coordination
+
+User Story 6.1: Align with Qingling on Export Scope
+
+As a product owner
+I want to review the field list and export format with Qingling
+So that the export utility delivers exactly what the DS and analytics teams need at UAT start.
+
+⸻
+
+Next Steps
+	•	Break these into subtasks for dev (e.g., export backend, frontend trigger, file storage, JSON parser).
+	•	Validate final field names and types from the linked Excel file.
+	•	Confirm export format (CSV vs JSON) and frequency with stakeholders.
+	•	Size all work and sequence in upcoming sprints.
+
+Would you like this output also formatted as a Jira story set with estimates, tags, or components?
+
+Q1: Should we treat JSON ingestion as its own epic, or leave it grouped here?
+Q2: Who should be the product owner for prioritization—Justin or Qingling?
+Q3: Should future metrics (assertion results, satisfaction) be placeholder stories in Sprint 10 or reserved for the backlog?
