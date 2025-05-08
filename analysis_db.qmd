@@ -1,125 +1,68 @@
-Absolutely. Here’s a refined breakdown of the three stories, aligned with your updated direction:
+Great—here’s the updated version of the Manual Export via Admin Console user story and acceptance criteria, incorporating your responses:
 
 ⸻
 
-User Story 1: Store All Defined Analysis and Assertion Fields
+User Story: Filtered Manual Export of Analysis and Assertion Data via Admin Console
 
-Title: Store and Persist All Defined Fields for Analysis and Assertion Data
+Title: Enable Filtered and Combinable Manual Export with Download to User Device
 
-As a data engineer
-I want to store all defined fields for analysis metrics and assertion data in the analytics database
-So that downstream teams can access a comprehensive, structured view of CBCI outputs for reporting, diagnostics, and model evaluation.
+As an admin user
+I want to filter and combine multiple criteria when exporting analysis and assertion data
+So that I can retrieve exactly the subset I need and save the file directly to my computer, without storing it on the server.
 
 ⸻
 
-Field Coverage:
+Filter Capabilities (Combinable Filters):
+	•	Date Range: Start Date to End Date
+	•	WCIS ID: Supports exact or partial match
+	•	Username: Text input with typeahead
+	•	Analysis Status: Select from predefined values (Completed, Failed, Draft, etc.)
+	•	Export Format: CSV or JSON
 
-Core Metadata
-	•	Analysis Date
-	•	Analysis ID
-	•	Analysis Revision ID
-	•	User ID, Username, Entity Name, WCIS ID, Optimist ID
-	•	Analysis Status
+⸻
 
-Processing Diagnostics
-	•	Processing Duration (and any subfields if broken down: extraction, prep, Tachyon call, assertion routine, total time)
-
-Areas of Attention
-	•	Metric Accuracy Rating
-	•	Metric Accuracy Category
-	•	Metric Accuracy Free Form Comments
-	•	Materiality Rating
-	•	Materiality Category
-	•	Materiality Free Form Comments
-	•	Areas of Attention Overall
-	•	Areas of Attention Character Count
-
-Financial Analysis
-	•	Income Statement (Accuracy & Completeness ratings, categories, comments)
-	•	Balance Sheet (Completeness ratings, categories, comments)
-	•	Cash Flow (Completeness ratings, categories, comments)
-	•	Overall Financial Analysis Comments
-	•	Original Version Character Count
-	•	Editable Version Character Count
-
-Assertion Data
-	•	Assertion Results (to be built)
-	•	Overall Satisfaction Rating (to be built)
+Behavioral Requirements:
+	•	Filters may be combined in any way (e.g., WCIS ID + date range + status)
+	•	If the result set exceeds 10,000 records, the system should:
+	•	Display a warning
+	•	Prompt the user to refine filters or confirm download of a truncated file (with a note in the file header/footer)
+	•	Download should immediately stream to the user’s local device (no intermediate server save)
 
 ⸻
 
 Acceptance Criteria (Gherkin):
 
-Given a completed analysis and assertion process
-When the system stores results to the analytics database
-Then all defined fields are written to appropriate tables and columns
-And any new fields introduced later can be extended without breaking existing records
+Scenario: Combined export with multiple filters
+Given I am logged into the admin console
+When I enter a date range, WCIS ID, and select "Completed" status
+And I choose JSON as the format
+Then the system applies all filters
+And returns only matching records
+And initiates a download of the file to my computer
+
+Scenario: Large export exceeds row limit
+Given my filter criteria would return more than 10,000 records
+When I initiate the export
+Then the system displays a warning
+And allows me to either cancel, refine filters, or proceed with a truncated export
+And the export file clearly notes that it is truncated
+
+Scenario: Format selection
+Given I selected export format as CSV
+Then the downloaded file is a valid CSV file containing the filtered records
+And the filename includes a timestamp and key filters (e.g., `cbcimetrics_2024-01-01_to_2024-01-31_completed.csv`)
 
 
 ⸻
 
-User Story 2: Manual Export to JSON or CSV via Admin Console
-
-Title: Enable Manual Export of Analysis Data via Admin Console
-
-As an admin user
-I want to manually export the analysis and assertion dataset as JSON or CSV from the admin console
-So that I can inspect the data, support ad hoc requests, or perform quick reviews outside the system.
+Technical Implementation Notes:
+	•	File generation and filtering should happen on-demand via a single backend endpoint, with filter params sent as query/body parameters.
+	•	Use streaming responses for large files to minimize browser and memory strain.
+	•	Add a max row count config to the backend for future flexibility (e.g., allow up to 50,000 if needed with pagination or chunked download).
+	•	Consider tracking download attempts in an audit log (future enhancement).
 
 ⸻
 
-Acceptance Criteria:
+Would you like this story broken into technical subtasks (e.g., backend filter API, frontend UI, file streaming service)?
 
-Given an admin user is logged into the admin console
-When they select "Export Dataset"
-And choose JSON or CSV format
-Then the system generates and downloads the export file
-And it includes all stored fields for completed records
-
-Notes:
-	•	Export should reflect the current schema, including assertion results once implemented.
-	•	User should be able to select the export scope (e.g., date range, user, status) in a future enhancement.
-
-⸻
-
-User Story 3: Scheduled Export of Analysis Data to JSON and CSV
-
-Title: Enable Scheduled Export of Analysis and Assertion Data in JSON and CSV Formats
-
-As a product owner
-I want to configure scheduled exports to both JSON and CSV formats from the admin console
-So that downstream analytics platforms and data pipelines can consume the data on a regular basis without manual intervention.
-
-⸻
-
-Acceptance Criteria:
-
-Given an admin user configures a scheduled export in the admin console
-When the configured time interval is reached
-Then the system generates exports in both JSON and CSV formats
-And saves them to the designated location (e.g., S3, SharePoint, internal file store)
-And logs a status message confirming the export
-
-Admin Console Requirements:
-	•	Schedule configuration (daily, weekly, custom CRON)
-	•	Format toggles (JSON, CSV, or both)
-	•	Export history/status display
-	•	Option to download past exports from the console
-
-⸻
-
-Optional Add-On (Separate Story):
-
-Title: Configure Export Destination and Retention Policy
-
-As a system administrator
-I want to specify the destination (S3, SharePoint, etc.) and file retention duration
-So that exported data is managed securely and complies with data governance standards.
-
-⸻
-
-Would you like me to turn this into a requirements-ready table or Jira import file?
-
-Q1: Should the export destination (e.g., SharePoint or S3 bucket) be selectable per export job?
-Q2: Is there a preferred default file naming convention or should filenames include timestamps and run IDs?
-Q3: Should the system notify anyone (email/slack/etc.) on export success or failure?
+Q3 (from earlier): Should users be able to save export presets (e.g., “Daily WCIS Report”) for reuse, or is that out of scope for now?
