@@ -1,0 +1,74 @@
+# User Story: Configure Recurring Analysis Extracts
+
+**Title**: Super Admin: Configure and Manage Scheduled Extracts
+
+**As a** CBCI super admin  
+**I want** to define recurring extract schedules including frequency, time of day, and extract criteria  
+**So that** reports can be automatically generated and delivered for routine analysis and compliance tracking without manual effort
+
+---
+
+## Acceptance Criteria
+
+### Feature: Configure recurring scheduled extracts
+
+**Scenario: Super admin creates a new daily scheduled extract**  
+**Given** I am logged in as a CBCI super admin  
+**And** I navigate to the “Scheduled Extracts” section in the admin console  
+**When** I create a new extract schedule  
+**And** I specify the following:
+
+| Field             | Example                             |
+|------------------|-------------------------------------|
+| Schedule Name     | “Daily Optimist Summary”            |
+| Frequency         | Daily / Weekly / Monthly            |
+| Time of Day       | 06:00 EST                           |
+| Start Date        | 2025-05-10                          |
+| End Date (Optional)| 2025-12-31                         |
+| Criteria          | Date Range = “Yesterday”            |
+|                  | Include LLM Raw JSON = “No”          |
+|                  | Include Most Recent Revision Only = “Yes” |
+| Output Format     | CSV or JSON                         |
+
+**Then** the schedule should be saved  
+**And** the system should run the extract at the scheduled time  
+**And** the extract should use the defined filters and format  
+**And** the generated file should be saved to a system-configured export location  
+**And** the file should be named using the format: `CBCI_ScheduledReport_<ScheduleName>_<YYYYMMDD_HHMMSS>.<csv|json>`
+
+---
+
+**Scenario: Super admin is limited by maximum allowed schedules**  
+**Given** I am a CBCI super admin  
+**When** I attempt to create a new extract schedule  
+**And** the total number of active schedules has reached the configured maximum  
+**Then** I should receive an error message: “Maximum number of active schedules reached”  
+**And** I should not be able to save the new schedule
+
+---
+
+**Scenario: Super admin edits an existing schedule**  
+**Given** I have an existing schedule named “Weekly Accuracy Export”  
+**When** I select “Edit” on that schedule  
+**And** I update the time of day to 04:00 EST and change the frequency to “Weekly”  
+**Then** the changes should be saved  
+**And** the extract should run according to the updated schedule going forward
+
+---
+
+**Scenario: Super admin deactivates or deletes a schedule**  
+**Given** I have a saved schedule named “Monthly Report”  
+**When** I choose to deactivate or delete the schedule  
+**Then** the schedule should no longer run  
+**And** the schedule should be marked inactive or removed from the system
+
+---
+
+## Additional Notes
+
+- **Frequency options**: Daily, Weekly (specific day of week), Monthly (specific date or ordinal weekday such as "3rd Monday").
+- **Time of day**: Should allow timezone selection or default to system standard (e.g., EST).
+- **Max schedule limit**: Super admin-configurable (e.g., default = 5).
+- **Metadata per schedule**: Include Active/Inactive status, last run time, next run time.
+- **Run logs**: Each execution should log status (Success/Fail), duration, and record count.
+- **File output**: Stored in a shared location, with clear timestamped naming.
