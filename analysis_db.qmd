@@ -1,3 +1,89 @@
+Excellent. Here’s an updated and expanded user story for the admin UI export functionality, incorporating all your requirements:
+
+⸻
+
+User Story: Manual Export via Admin Console with Filters and Local Download
+
+Title: Enable Filtered Manual Export of Analysis and Assertion Data via Admin Console
+
+As an admin user
+I want to extract analysis and assertion data from the admin console using meaningful filters
+So that I can download only the data I need in CSV or JSON format and save it directly to my local machine for review or analysis.
+
+⸻
+
+Acceptance Criteria (Gherkin):
+
+Scenario: Filtered export by date range
+Given I am logged into the admin console
+When I select "Export Dataset"
+And I enter a start and end date
+Then the system generates a file including only analyses created within that date range
+And prompts me to download the file to my computer
+
+Scenario: Filtered export by WCIS ID
+Given I am logged into the admin console
+When I select "Export Dataset"
+And I enter a WCIS ID
+Then the system generates a file with all analyses linked to that WCIS ID
+And prompts me to download it locally
+
+Scenario: Filtered export by Username
+Given I am logged into the admin console
+When I select "Export Dataset"
+And I enter a Username
+Then the system exports only the analyses performed by that user
+And prompts me to download the file
+
+Scenario: Filtered export by Analysis Status
+Given I am logged into the admin console
+When I select "Export Dataset"
+And I choose an Analysis Status (e.g., Completed, Failed, Draft)
+Then the system includes only records with that status
+And prompts me to download the file
+
+Scenario: Format selection and download
+Given I am preparing an export
+When I choose either CSV or JSON format
+Then the export is generated in the selected format
+And no files are saved to the server
+
+
+⸻
+
+Filter Options (UI Form Components):
+	1.	Date Range:
+	•	From Date → To Date (e.g., 2024-01-01 to 2024-01-31)
+	2.	WCIS ID:
+	•	Text input (exact match or contains)
+	3.	Username:
+	•	Dropdown or text input with typeahead
+	4.	Analysis Status:
+	•	Dropdown (Completed, Draft, Failed, etc.)
+	5.	Format Selector:
+	•	Radio buttons or dropdown (CSV, JSON)
+
+⸻
+
+Technical Notes:
+	•	Frontend: Trigger file generation and initiate download using a secure blob URL or base64-encoded file served via browser.
+	•	Backend: Filter data based on query params; return data directly in HTTP response with Content-Disposition: attachment.
+	•	No server persistence: All generated files are streamed and immediately discarded server-side after download is complete.
+
+⸻
+
+Example File Naming Conventions:
+	•	cbcimetrics_2024-01-01_to_2024-01-31.csv
+	•	cbcimetrics_user_jdavis_completed.json
+
+⸻
+
+Would you like wireframe-style mockups for this admin UI export panel?
+
+Q1: Should multiple filters be combinable (e.g., date + WCIS ID + status), or should filters be used one at a time?
+Q2: Should there be a cap on the number of rows per download (e.g., max 10,000) to avoid browser crashes?
+Q3: Should users with specific roles (e.g., compliance or DS leads) have saved export presets or templates?
+
 Great—here’s the updated version of the Manual Export via Admin Console user story and acceptance criteria, incorporating your responses:
 
 ⸻
@@ -66,3 +152,77 @@ Technical Implementation Notes:
 Would you like this story broken into technical subtasks (e.g., backend filter API, frontend UI, file streaming service)?
 
 Q3 (from earlier): Should users be able to save export presets (e.g., “Daily WCIS Report”) for reuse, or is that out of scope for now?
+
+Certainly. Here are detailed Gherkin-style acceptance criteria for the scheduled export of analysis and assertion data (User Story 3), including timing, format, destination handling, and error reporting.
+
+⸻
+
+User Story:
+
+Title: Enable Scheduled Export of Analysis and Assertion Data in JSON and CSV Formats
+
+⸻
+
+Gherkin Acceptance Criteria
+
+Feature: Scheduled export of analysis and assertion data
+
+  Scenario: Configure a new scheduled export job
+    Given I am logged into the admin console as an authorized user
+    When I navigate to the "Scheduled Exports" section
+    And I create a new export job with a selected format (JSON or CSV)
+    And I choose a daily frequency at 02:00 AM
+    Then the export job is saved
+    And it appears in the list of active export jobs
+
+  Scenario: Generate and deliver export at scheduled time
+    Given a scheduled export job exists for JSON format at 02:00 AM daily
+    And the system time reaches 02:00 AM
+    When the export job executes
+    Then the system generates the file in JSON format
+    And it includes all analysis and assertion data completed since the last export
+    And it is saved to the configured export destination (e.g., S3, internal file share)
+    And a log entry is created indicating success
+
+  Scenario: Scheduled export includes format and naming
+    Given the export job is configured for both JSON and CSV formats
+    When the job executes
+    Then the system generates two files
+    And their filenames include the export timestamp and format
+    And both files are saved to the configured destination
+
+  Scenario: Scheduled export fails
+    Given a scheduled export job runs at its scheduled time
+    And an error occurs during file generation or delivery
+    Then the system logs the failure with the error reason
+    And notifies the configured contact (if notifications are enabled)
+
+  Scenario: View and edit existing scheduled jobs
+    Given I am on the admin console "Scheduled Exports" section
+    When I select an existing job
+    Then I can modify its frequency, format, filters, or destination
+    And I can save the updated job without removing past logs
+
+  Scenario: Manually trigger a scheduled export
+    Given a scheduled export job is defined
+    When I click "Run Now" on the job row
+    Then the export job executes immediately
+    And the file is saved to the destination
+    And the run is logged with a manual override flag
+
+  Scenario: Prevent overlapping jobs
+    Given two export jobs are scheduled for overlapping times
+    When both jobs target the same destination path
+    Then the system serializes their execution
+    Or appends unique identifiers to avoid filename conflicts
+
+
+⸻
+
+Optional Enhancements for Future Stories
+	•	Retention policy: Auto-delete files after N days.
+	•	Time zone selection: Schedule jobs in specific time zones.
+	•	Filter presets: Limit scheduled exports to specific WCIS IDs or statuses.
+	•	Audit trail: View all past runs with status (Success/Failed/Skipped).
+
+Would you like the backend logic for scheduling (e.g., CRON format support) included in implementation notes?
