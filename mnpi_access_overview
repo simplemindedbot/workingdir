@@ -1,0 +1,72 @@
+To ensure we comply with regulatory requirements and internal policy around Material Nonpublic Information (MNPI), we are implementing a centralized approach to identify and control the inclusion of MNPI-flagged data in client analyses.
+
+  
+
+Currently, data on whether a loan or transaction is MNPI-flagged resides in RV/CRM and is updated nightly. Deal package data originates in nCino, and user access is governed by entitlements managed in CBCI.
+
+  
+
+Our goal is to:
+
+- Prevent users from unintentionally including MNPI content in an analysis.
+- Ensure that all CBCI workflows (viewing, initiating, editing, or accessing via links) consistently check for MNPI exposure.
+- Prepare for future functionality that allows users with appropriate entitlements to access MNPI content, including proper logging, auditing, and optional justification.
+
+  
+
+This approach will be implemented in a way that is centralized, maintainable, and extensible. The system will not hard-code logic in each workflow. Instead, it will rely on a common function that checks whether any component of a deal package is MNPI-flagged and whether the current user is permitted to view it.
+
+Absolutely -- here's a version that reads like it was written by someone summarizing a meeting in a follow-up email:
+* * *
+
+Subject: Follow-up on MNPI Handling Approach
+
+  
+
+Hi all,
+
+  
+
+Thanks for the good discussion earlier. Just recapping where we landed on MNPI handling:
+
+  
+
+We're moving forward with a centralized approach to manage MNPI (Material Nonpublic Information) in CBCI. The main goal is to make sure we're compliant with regulatory and internal policy, and to avoid users accidentally including MNPI-flagged loans or transactions in client analyses.
+
+  
+
+As it stands:
+
+- MNPI flags are stored in RV/CRM and refreshed nightly
+- Deal package data flows in from nCino
+- User permissions are controlled in CBCI
+
+  
+
+The short-term focus is to prevent exposure by checking for MNPI at key points in the workflow -- whether the user is viewing, starting, editing, or opening an analysis. We'll also lay the groundwork for future support of users with explicit entitlements to access MNPI, including proper logging, audit trails, and optional justification.
+
+  
+
+Rather than embedding this logic in every workflow, we'll build a shared function to check two things:
+
+1. Does the deal package include MNPI-flagged data?
+
+2. Is the user allowed to see it?
+
+  
+
+This gives us a centralized, maintainable way to control MNPI exposure and adapt as requirements evolve.
+
+  
+
+Let me know if you have any follow-ups or if you'd like to walk through the function structure in more detail.
+
+  
+
+Best,
+
+[Your Name]
+
+* * *
+
+Would you like a quick diagram or sequence flow to go along with this for the next stakeholder deck or documentation update?
