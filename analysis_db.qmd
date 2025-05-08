@@ -1,3 +1,129 @@
+Absolutely. Here’s a refined breakdown of the three stories, aligned with your updated direction:
+
+⸻
+
+User Story 1: Store All Defined Analysis and Assertion Fields
+
+Title: Store and Persist All Defined Fields for Analysis and Assertion Data
+
+As a data engineer
+I want to store all defined fields for analysis metrics and assertion data in the analytics database
+So that downstream teams can access a comprehensive, structured view of CBCI outputs for reporting, diagnostics, and model evaluation.
+
+⸻
+
+Field Coverage:
+
+Core Metadata
+	•	Analysis Date
+	•	Analysis ID
+	•	Analysis Revision ID
+	•	User ID, Username, Entity Name, WCIS ID, Optimist ID
+	•	Analysis Status
+
+Processing Diagnostics
+	•	Processing Duration (and any subfields if broken down: extraction, prep, Tachyon call, assertion routine, total time)
+
+Areas of Attention
+	•	Metric Accuracy Rating
+	•	Metric Accuracy Category
+	•	Metric Accuracy Free Form Comments
+	•	Materiality Rating
+	•	Materiality Category
+	•	Materiality Free Form Comments
+	•	Areas of Attention Overall
+	•	Areas of Attention Character Count
+
+Financial Analysis
+	•	Income Statement (Accuracy & Completeness ratings, categories, comments)
+	•	Balance Sheet (Completeness ratings, categories, comments)
+	•	Cash Flow (Completeness ratings, categories, comments)
+	•	Overall Financial Analysis Comments
+	•	Original Version Character Count
+	•	Editable Version Character Count
+
+Assertion Data
+	•	Assertion Results (to be built)
+	•	Overall Satisfaction Rating (to be built)
+
+⸻
+
+Acceptance Criteria (Gherkin):
+
+Given a completed analysis and assertion process
+When the system stores results to the analytics database
+Then all defined fields are written to appropriate tables and columns
+And any new fields introduced later can be extended without breaking existing records
+
+
+⸻
+
+User Story 2: Manual Export to JSON or CSV via Admin Console
+
+Title: Enable Manual Export of Analysis Data via Admin Console
+
+As an admin user
+I want to manually export the analysis and assertion dataset as JSON or CSV from the admin console
+So that I can inspect the data, support ad hoc requests, or perform quick reviews outside the system.
+
+⸻
+
+Acceptance Criteria:
+
+Given an admin user is logged into the admin console
+When they select "Export Dataset"
+And choose JSON or CSV format
+Then the system generates and downloads the export file
+And it includes all stored fields for completed records
+
+Notes:
+	•	Export should reflect the current schema, including assertion results once implemented.
+	•	User should be able to select the export scope (e.g., date range, user, status) in a future enhancement.
+
+⸻
+
+User Story 3: Scheduled Export of Analysis Data to JSON and CSV
+
+Title: Enable Scheduled Export of Analysis and Assertion Data in JSON and CSV Formats
+
+As a product owner
+I want to configure scheduled exports to both JSON and CSV formats from the admin console
+So that downstream analytics platforms and data pipelines can consume the data on a regular basis without manual intervention.
+
+⸻
+
+Acceptance Criteria:
+
+Given an admin user configures a scheduled export in the admin console
+When the configured time interval is reached
+Then the system generates exports in both JSON and CSV formats
+And saves them to the designated location (e.g., S3, SharePoint, internal file store)
+And logs a status message confirming the export
+
+Admin Console Requirements:
+	•	Schedule configuration (daily, weekly, custom CRON)
+	•	Format toggles (JSON, CSV, or both)
+	•	Export history/status display
+	•	Option to download past exports from the console
+
+⸻
+
+Optional Add-On (Separate Story):
+
+Title: Configure Export Destination and Retention Policy
+
+As a system administrator
+I want to specify the destination (S3, SharePoint, etc.) and file retention duration
+So that exported data is managed securely and complies with data governance standards.
+
+⸻
+
+Would you like me to turn this into a requirements-ready table or Jira import file?
+
+Q1: Should the export destination (e.g., SharePoint or S3 bucket) be selectable per export job?
+Q2: Is there a preferred default file naming convention or should filenames include timestamps and run IDs?
+Q3: Should the system notify anyone (email/slack/etc.) on export success or failure?
+
 Excellent. Here’s an updated and expanded user story for the admin UI export functionality, incorporating all your requirements:
 
 ⸻
