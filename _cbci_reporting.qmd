@@ -1,0 +1,145 @@
+
+# CBCI Reporting Feature – User Stories
+
+This document contains the initial set of prioritized user stories for structured report generation from the CBCI system. These stories focus on manual export, scheduled reporting, data dictionary management, optional model output, and downstream publishing.
+
+---
+
+## User Story 1: On-Demand Report Export
+**As** an Admin user  
+**I want** to generate a report from the data dictionary fields on demand in CSV or JSON format  
+**So that** I can analyze or share the data immediately without waiting for a scheduled job.
+
+### Acceptance Criteria (Gherkin)
+```gherkin
+Feature: On-Demand Report Export
+
+  Scenario: Admin downloads a report in CSV format
+    Given I am logged in as an Admin user
+    When I select "Export Report"
+    And I choose "CSV" as the format
+    And I provide criteria including a date range, WCIS ID, Username, and Analysis Status
+    Then a CSV file is generated and downloaded with the selected fields and filters
+
+  Scenario: Admin downloads a report in JSON format
+    Given I am logged in as an Admin user
+    When I select "Export Report"
+    And I choose "JSON" as the format
+    And I provide criteria including a date range and analysis status
+    Then a JSON file is generated and downloaded
+
+  Scenario: Admin specifies record count limit
+    Given I am logged in as an Admin user
+    When I configure the report to include a maximum of 5000 records
+    Then the output file should contain no more than 5000 records
+```
+
+---
+
+## User Story 2: Schedule Recurring Reports
+**As** an Admin user  
+**I want** to schedule recurring reports from the admin console  
+**So that** I can automate regular delivery of structured data for analysis or archival.
+
+### Acceptance Criteria (Gherkin)
+```gherkin
+Feature: Scheduled Report Generation
+
+  Scenario: Admin sets up a new scheduled report
+    Given I am logged in as an Admin user
+    When I configure a scheduled report with filters (date range, WCIS ID, Username)
+    And I set the recurrence pattern (e.g., daily, weekly)
+    Then the system should save the schedule and generate the report accordingly
+
+  Scenario: Scheduled report includes up to configured record limit
+    Given I have set a report limit of 10,000 records in the admin console
+    When the report runs on schedule
+    Then it should only include up to 10,000 records even if more match the criteria
+
+  Scenario: Scheduled report is saved to designated location
+    Given a scheduled report has run
+    Then the file should be saved to a predefined directory
+    And the file name should include the timestamp and identifying criteria
+
+  Scenario: Scheduled report does not vary by requesting user
+    Given a scheduled report is configured
+    When it runs
+    Then it should include all matching system-wide records, not user-specific data
+```
+
+---
+
+## User Story 3: Include Raw Model JSON in Reports
+**As** a Data Science user  
+**I want** to optionally include raw JSON model output in exported reports  
+**So that** I can review and compare raw model predictions alongside structured fields.
+
+### Acceptance Criteria (Gherkin)
+```gherkin
+Feature: Include Raw JSON in Export
+
+  Scenario: Admin selects to include raw JSON in export
+    Given I am logged in as an Admin user
+    When I request a report and select "Include Raw Model Output"
+    Then the report should contain a field with raw JSON output from the model
+
+  Scenario: Admin chooses not to include raw model output
+    Given I am logged in as an Admin user
+    When I request a report and do not select "Include Raw Model Output"
+    Then the report should exclude that field
+```
+
+---
+
+## User Story 4: Publish Extracted Data to Downstream Systems
+**As** an Admin user  
+**I want** to publish structured report data to downstream systems like iHub  
+**So that** data can be analyzed and visualized without manual file handling.
+
+### Acceptance Criteria (Gherkin)
+```gherkin
+Feature: Publish to Downstream Systems
+
+  Scenario: Admin enables automatic publishing to iHub
+    Given I have configured the iHub connection in the admin console
+    When a report is generated (on-demand or scheduled)
+    Then the data should be automatically published to the iHub endpoint
+
+  Scenario: Publishing is disabled
+    Given the iHub connection is not configured
+    When a report is generated
+    Then no downstream publishing should occur
+```
+
+---
+
+## User Story 5: Define and Manage the Data Dictionary
+**As** an Admin user  
+**I want** to define and manage the data dictionary fields available for reporting  
+**So that** the system can generate consistent and accurate structured reports.
+
+### Acceptance Criteria (Gherkin)
+```gherkin
+Feature: Data Dictionary Management
+
+  Scenario: Admin views current data dictionary
+    Given I am logged in as an Admin user
+    When I navigate to the "Data Dictionary" section of the admin console
+    Then I should see a list of all fields available for reporting
+    And each field should display its name, data type, and description
+
+  Scenario: Admin adds a new field to the dictionary
+    Given I am logged in as an Admin user
+    When I enter a new field name, data type, and description
+    And I save the changes
+    Then the field should be added to the dictionary and be available for export
+
+  Scenario: Admin disables a field from being included in reports
+    Given a field is currently enabled for reporting
+    When I uncheck "Include in reports"
+    Then the field should be excluded from future reports
+
+  Scenario: Dictionary changes are versioned
+    Given I make changes to the data dictionary
+    Then the system should store a version history with a timestamp and user attribution
+```
