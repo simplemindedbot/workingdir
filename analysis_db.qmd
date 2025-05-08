@@ -1,117 +1,125 @@
-Here is a preliminary set of user stories based on the provided text. These stories are grouped by function to support export utility development, metrics field mapping, JSON file ingestion, and future enhancements.
+Absolutely. Here’s a refined breakdown of the three stories, aligned with your updated direction:
 
 ⸻
 
-EPIC: Enable Export and Analysis of CBCI Metrics Data
+User Story 1: Store All Defined Analysis and Assertion Fields
+
+Title: Store and Persist All Defined Fields for Analysis and Assertion Data
+
+As a data engineer
+I want to store all defined fields for analysis metrics and assertion data in the analytics database
+So that downstream teams can access a comprehensive, structured view of CBCI outputs for reporting, diagnostics, and model evaluation.
 
 ⸻
 
-Feature 1: Develop Basic Export Utility
+Field Coverage:
 
-User Story 1.1: Export Metrics Dataset to File
+Core Metadata
+	•	Analysis Date
+	•	Analysis ID
+	•	Analysis Revision ID
+	•	User ID, Username, Entity Name, WCIS ID, Optimist ID
+	•	Analysis Status
 
-As a data analyst
-I want the ability to export the metrics data to a structured file format (e.g., CSV or JSON)
-So that I can easily review, analyze, and monitor data quality and trends during UAT.
+Processing Diagnostics
+	•	Processing Duration (and any subfields if broken down: extraction, prep, Tachyon call, assertion routine, total time)
+
+Areas of Attention
+	•	Metric Accuracy Rating
+	•	Metric Accuracy Category
+	•	Metric Accuracy Free Form Comments
+	•	Materiality Rating
+	•	Materiality Category
+	•	Materiality Free Form Comments
+	•	Areas of Attention Overall
+	•	Areas of Attention Character Count
+
+Financial Analysis
+	•	Income Statement (Accuracy & Completeness ratings, categories, comments)
+	•	Balance Sheet (Completeness ratings, categories, comments)
+	•	Cash Flow (Completeness ratings, categories, comments)
+	•	Overall Financial Analysis Comments
+	•	Original Version Character Count
+	•	Editable Version Character Count
+
+Assertion Data
+	•	Assertion Results (to be built)
+	•	Overall Satisfaction Rating (to be built)
+
+⸻
 
 Acceptance Criteria (Gherkin):
 
-Given the CBCI metrics data is available in the application
-When the user selects "Export Dataset"
-Then a downloadable CSV or JSON file is generated
-And it includes all defined metric fields
-And the export is completed within 30 seconds
+Given a completed analysis and assertion process
+When the system stores results to the analytics database
+Then all defined fields are written to appropriate tables and columns
+And any new fields introduced later can be extended without breaking existing records
 
-User Story 1.2: Schedule Regular Exports
+
+⸻
+
+User Story 2: Manual Export to JSON or CSV via Admin Console
+
+Title: Enable Manual Export of Analysis Data via Admin Console
+
+As an admin user
+I want to manually export the analysis and assertion dataset as JSON or CSV from the admin console
+So that I can inspect the data, support ad hoc requests, or perform quick reviews outside the system.
+
+⸻
+
+Acceptance Criteria:
+
+Given an admin user is logged into the admin console
+When they select "Export Dataset"
+And choose JSON or CSV format
+Then the system generates and downloads the export file
+And it includes all stored fields for completed records
+
+Notes:
+	•	Export should reflect the current schema, including assertion results once implemented.
+	•	User should be able to select the export scope (e.g., date range, user, status) in a future enhancement.
+
+⸻
+
+User Story 3: Scheduled Export of Analysis Data to JSON and CSV
+
+Title: Enable Scheduled Export of Analysis and Assertion Data in JSON and CSV Formats
 
 As a product owner
-I want the metrics export utility to support scheduled daily runs
-So that downstream analytics pipelines can consume the latest data without manual intervention.
+I want to configure scheduled exports to both JSON and CSV formats from the admin console
+So that downstream analytics platforms and data pipelines can consume the data on a regular basis without manual intervention.
 
 ⸻
 
-Feature 2: Map Metrics Fields to Database Targets
+Acceptance Criteria:
 
-User Story 2.1: Map Analysis Metadata Fields
+Given an admin user configures a scheduled export in the admin console
+When the configured time interval is reached
+Then the system generates exports in both JSON and CSV formats
+And saves them to the designated location (e.g., S3, SharePoint, internal file store)
+And logs a status message confirming the export
 
-As a developer
-I want the following fields mapped to the analytics database: Analysis Date, Analysis ID, Revision ID, User ID, Username, Entity Name, WCIS ID
-So that they can be referenced in dashboards and data lineage tracking.
-
-User Story 2.2: Map Processing Metrics
-
-As a data engineer
-I want to capture and store processing time segments (extraction, Tachyon call, assertion routine, total duration)
-So that I can diagnose performance bottlenecks.
-
-⸻
-
-Feature 3: Include Areas of Attention and Financial Metrics
-
-User Story 3.1: Store and Export Accuracy and Materiality Ratings
-
-As a compliance reviewer
-I want to include fields related to Accuracy, Materiality, Free Form Comments, and Overall Ratings
-So that qualitative and quantitative review feedback is captured and auditable.
-
-User Story 3.2: Capture Financial Analysis Comments and Character Counts
-
-As a data scientist
-I want the system to track both editable and original version character counts
-So that I can analyze reviewer impact and verbosity across documents.
+Admin Console Requirements:
+	•	Schedule configuration (daily, weekly, custom CRON)
+	•	Format toggles (JSON, CSV, or both)
+	•	Export history/status display
+	•	Option to download past exports from the console
 
 ⸻
 
-Feature 4: JSON File Consumption (Future Phase)
+Optional Add-On (Separate Story):
 
-User Story 4.1: Ingest Transaction-Level JSON Files
+Title: Configure Export Destination and Retention Policy
 
-As a data scientist
-I want the system to ingest JSON files associated with transactions
-So that I can perform deeper analysis of the raw structured output.
-
-User Story 4.2: Link JSON Files to Analysis Records
-
-As a developer
-I want to associate each JSON file with its corresponding Analysis ID and Revision ID
-So that analysts can quickly trace metric summaries to raw data.
+As a system administrator
+I want to specify the destination (S3, SharePoint, etc.) and file retention duration
+So that exported data is managed securely and complies with data governance standards.
 
 ⸻
 
-Feature 5: Placeholder for In-App Enhancements
+Would you like me to turn this into a requirements-ready table or Jira import file?
 
-User Story 5.1: Add Assertion Result Field to Dataset
-
-As a developer
-I want to add support for storing and exporting assertion result data
-So that completeness and accuracy checks can be traced post-generation.
-
-User Story 5.2: Add Overall Satisfaction Rating
-
-As a product manager
-I want to capture an overall satisfaction rating from end users
-So that we can assess the perceived quality and utility of the generated analysis.
-
-⸻
-
-Feature 6: Stakeholder Alignment and Coordination
-
-User Story 6.1: Align with Qingling on Export Scope
-
-As a product owner
-I want to review the field list and export format with Qingling
-So that the export utility delivers exactly what the DS and analytics teams need at UAT start.
-
-⸻
-
-Next Steps
-	•	Break these into subtasks for dev (e.g., export backend, frontend trigger, file storage, JSON parser).
-	•	Validate final field names and types from the linked Excel file.
-	•	Confirm export format (CSV vs JSON) and frequency with stakeholders.
-	•	Size all work and sequence in upcoming sprints.
-
-Would you like this output also formatted as a Jira story set with estimates, tags, or components?
-
-Q1: Should we treat JSON ingestion as its own epic, or leave it grouped here?
-Q2: Who should be the product owner for prioritization—Justin or Qingling?
-Q3: Should future metrics (assertion results, satisfaction) be placeholder stories in Sprint 10 or reserved for the backlog?
+Q1: Should the export destination (e.g., SharePoint or S3 bucket) be selectable per export job?
+Q2: Is there a preferred default file naming convention or should filenames include timestamps and run IDs?
+Q3: Should the system notify anyone (email/slack/etc.) on export success or failure?
