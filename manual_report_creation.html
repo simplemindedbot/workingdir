@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manual Report Creation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
+    h2 {
+      margin-top: 2rem;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      box-sizing: border-box;
+    }
+    .form-section {
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: left;
+    }
+    th {
+      background-color: #f8f8f8;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Generate Manual Report</h1>
+
+  <form class="form-section">
+    <label for="dateRange">Date Range</label>
+    <select id="dateRange" name="dateRange">
+      <option value="">Select date range</option>
+      <option value="today">Today</option>
+      <option value="yesterday">Yesterday</option>
+      <option value="last7">Last 7 Days</option>
+      <option value="custom">Custom...</option>
+    </select>
+
+    <label for="wcisId">WCIS ID</label>
+    <input type="text" id="wcisId" name="wcisId" />
+
+    <label for="optimistId">Optimist ID</label>
+    <input type="text" id="optimistId" name="optimistId" />
+
+    <label for="requestingUserId">Requesting User ID</label>
+    <input type="text" id="requestingUserId" name="requestingUserId" />
+
+    <label for="status">Analysis Status</label>
+    <select id="status" name="status">
+      <option value="">Select status</option>
+      <option value="completed">Completed</option>
+      <option value="in_progress">In Progress</option>
+      <option value="error">Error</option>
+    </select>
+
+    <label for="includeRawJson">
+      <input type="checkbox" id="includeRawJson" name="includeRawJson" />
+      Include Raw JSON from LLM
+    </label>
+
+    <label for="mostRecentRevision">
+      <input type="checkbox" id="mostRecentRevision" name="mostRecentRevision" checked />
+      Include Only Most Recent Revision
+    </label>
+
+    <button type="submit">Generate Report</button>
+  </form>
+
+  <h2>My Generated Reports</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Report Name</th>
+        <th>Status</th>
+        <th>Date Requested</th>
+        <th>Expires</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>CBCI_ManualReport_20240508_103000.csv</td>
+        <td>Available</td>
+        <td>2024-05-08 10:30 AM</td>
+        <td>2024-05-09 10:30 AM</td>
+        <td><a href="#">Download</a></td>
+      </tr>
+      <tr>
+        <td>CBCI_ManualReport_20240507_084500.csv</td>
+        <td>Expired</td>
+        <td>2024-05-07 08:45 AM</td>
+        <td>2024-05-08 08:45 AM</td>
+        <td><em>N/A</em></td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
