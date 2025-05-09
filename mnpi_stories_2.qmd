@@ -1,0 +1,117 @@
+
+# MNPI Access Control – Consolidated User Stories
+
+## 1. Centralized and Maintainable MNPI Enforcement
+
+**As** a platform engineer  
+**I want** all workflows in CBCI to use a centralized service to check for MNPI-flagged entities and determine access  
+**So that** the system applies consistent, maintainable logic across workflows without duplicating business rules.
+
+This centralized service must:
+- Support deal-level and loan-level MNPI flags (from WDM via RV/CRM)
+- Evaluate whether the user has conflict clearance (now or in the future)
+- Be modular and extensible for future policy changes
+
+**Open Questions:**
+- Q1: Should restricted analyses still appear in the user interface (with a “Restricted” label), or should they be fully hidden?
+- Q2: If analyses are visible but not accessible, should metadata (e.g., title, entity name, status) still display?
+- Q3: Should access decisions allow partial visibility for non-MNPI content (e.g., if only one of several loans is flagged)?
+
+---
+
+## 2. Lifecycle-Sensitive Access to MNPI-Flagged Analyses
+
+**As** a system  
+**I want** to dynamically restrict or reinstate access to in-progress and completed analyses based on changes in MNPI status and user clearance  
+**So that** the system remains compliant while allowing authorized users to retain access to their work.
+
+This means:
+- Completed analyses should be temporarily restricted (not purged) when MNPI flags appear
+- Users should regain access if MNPI flags are later cleared, or if they receive conflict clearance
+- Analysis access state should re-evaluate on a schedule or trigger (e.g., nightly flag sync, entitlement update)
+
+**Open Questions:**
+- Q4: Who owns or governs conflict clearance status — will it be synced from a source system, manually administered, or requested by users?
+- Q5: Should reinstatement of access (e.g., post-clearance) happen automatically, or should it be triggered manually?
+
+---
+
+## 3. Role-Based Access Control Across All Workflows
+
+**As** a compliance officer  
+**I want** access to MNPI-flagged analyses to be enforced consistently across all CBCI workflows  
+**So that** users cannot bypass restrictions through alternate entry points such as emailed links or exports.
+
+Covered workflows include:
+- View, create, edit, finalize, rerun, and export analyses
+- Analysis access via deep links, dashboards, and shared URLs
+- Future integrations with model review, DS tooling, or third-party systems
+
+**Open Questions:**
+- Q6: Should downstream systems like DS/model pipelines respect the same MNPI access logic, or are they out of scope?
+- Q7: If a user is actively editing an analysis when an MNPI flag is applied, should they be forcibly ejected or allowed to finish editing with a warning?
+
+---
+
+## 4. Temporary Restriction Instead of Deletion
+
+**As** a product owner  
+**I want** restricted analyses to be retained in the system but hidden or locked from unauthorized users  
+**So that** users can recover access when eligibility changes, and we preserve audit and historical value.
+
+This story formally supersedes the earlier assumption of "purge on flag."  
+Access should be controlled via:
+- A status marker (e.g., `restricted_due_to_mnpi`)
+- A reinstatement path (flag cleared or conflict cleared)
+
+**Open Questions:**
+- Q8: If a shared analysis becomes MNPI-flagged, should we retroactively disable all existing shared access (e.g., emailed links)?
+- Q9: Are PDF/email exports required to be tracked or invalidated if MNPI flags appear after distribution?
+
+---
+
+## 5. User Awareness and Contextual Warnings
+
+**As** a CBCI user  
+**I want** visible indicators when an analysis includes MNPI-flagged content  
+**So that** I understand the sensitivity of the content I’m working with and can act appropriately.
+
+This includes:
+- Pre-analysis warnings for MNPI-flagged deals
+- A persistent visual indicator on the analysis page
+- Information about why access is blocked, when applicable
+
+**Open Questions:**
+- Q10: Should the user interface explain why an analysis is restricted (e.g., “Contains MNPI – access requires clearance”)?
+- Q11: Should users be allowed to filter out restricted analyses from their dashboards to reduce confusion?
+
+---
+
+## 6. Auditable Decision Logging and Policy Traceability
+
+**As** an auditor  
+**I want** a full record of MNPI access checks, restrictions, reinstatements, and user-level decisions  
+**So that** we can demonstrate compliance and investigate issues in regulatory reviews or internal audits.
+
+Logged events should include:
+- Access attempts (allowed/denied)
+- MNPI flag evaluations at the time of action
+- Any reinstatement events tied to flag clearance or user entitlement changes
+
+---
+
+# Grooming Worksheet – Open Questions
+
+| ID   | Question                                                                                         | Related Story |
+|------|--------------------------------------------------------------------------------------------------|---------------|
+| Q1   | Should restricted analyses still appear in the UI (with “Restricted” label), or be fully hidden? | Story 1       |
+| Q2   | If visible, should metadata for restricted analyses still display?                               | Story 1       |
+| Q3   | Should partial visibility be allowed for non-MNPI content?                                       | Story 1       |
+| Q4   | Who manages conflict clearance status?                                                           | Story 2       |
+| Q5   | Should reinstatement happen automatically or manually?                                           | Story 2       |
+| Q6   | Are downstream systems (DS, pipelines) in scope for MNPI logic?                                  | Story 3       |
+| Q7   | Should active users be interrupted or allowed to finish edits if MNPI appears mid-session?       | Story 3       |
+| Q8   | Should MNPI flags revoke access to shared links or external exports?                             | Story 4       |
+| Q9   | Should previously exported PDFs/emails be invalidated or tracked?                                | Story 4       |
+| Q10  | Should users see reasons for access restrictions in the UI?                                      | Story 5       |
+| Q11  | Should users be allowed to filter out restricted analyses from their dashboards?                 | Story 5       |
