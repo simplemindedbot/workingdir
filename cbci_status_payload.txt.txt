@@ -1,0 +1,33 @@
+DELAY 1000
+REM --- Start typing the Markdown version of the daily email ---
+STRING # Daily Status – CBCI Project (May 8–9)
+ENTER
+ENTER
+STRING **MNPI Controls**
+ENTER
+STRING - Consolidated MNPI-related stories down to a manageable set
+ENTER
+STRING - Integrated Madison’s feedback and grouped open questions inline
+ENTER
+STRING - Grooming table included for backlog readiness
+ENTER
+ENTER
+STRING **Admin Report Export**
+ENTER
+STRING - Finalized user stories and built HTML mockups for manual and scheduled report creation
+ENTER
+STRING - Filters include Entity, WCIS ID, Username, Date Range, Status, raw JSON inclusion, and max record count
+ENTER
+STRING - Scheduled reports tagged for retention
+ENTER
+ENTER
+STRING **Negative Tests**
+ENTER
+STRING - Began outlining business-driven negative test scenarios (e.g., permission issues, bad filters)
+ENTER
+STRING - Refinement ongoing
+ENTER
+ENTER
+STRING Let me know if you’d like a walkthrough of the report UI mockups or MNPI story set.
+ENTER
+STRING — Scot
