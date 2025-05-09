@@ -1,0 +1,71 @@
+# Manual Report Creation: Storage, Notification, Expiration, and UI Access
+
+## Notes
+
+### Report Storage & Access
+- Generated manual reports will be saved to a **user-accessible location** (e.g., within the CBCI admin console).
+- Reports should be scoped to the requesting user and not visible to others.
+- Files should use a consistent naming format:  
+  `CBCI_ManualReport_<YYYYMMDD_HHMMSS>.csv`
+
+### User Notification
+- After successful report generation:
+  - An **email notification** is sent to the user.
+  - A **CBCI in-app notification** (e.g., within a “My Reports” section or banner) is optionally displayed.
+
+### Report Lifecycle
+- Reports expire **24 hours after creation** if not downloaded.
+- Reports are deleted **immediately upon successful download**.
+- Expired reports are removed automatically and marked as such in the UI.
+
+### UI Component: “My Reports”
+- A new UI screen or section called **“My Reports”** is introduced.
+- Users can view reports they generated manually.
+- Each report entry includes:
+  - Report Name
+  - Status: In Progress, Available, or Expired
+  - Date/Time requested
+  - Download link (if Available)
+- Optional enhancements: sorting/filtering by request date or status.
+
+---
+
+## Acceptance Criteria
+
+### Feature: Manual Report Generation Workflow
+
+**Scenario: Report is saved to user-accessible location**  
+**Given** a CBCI admin has submitted a request to generate a manual report  
+**When** the report generation is complete  
+**Then** the report should be saved in a user-accessible location  
+**And** the report should be associated with the requesting user only  
+**And** the file should follow the naming convention: `CBCI_ManualReport_<YYYYMMDD_HHMMSS>.csv`
+
+---
+
+**Scenario: User is notified via email and CBCI interface**  
+**Given** a manual report has been successfully generated  
+**Then** the system should send an email to the requesting user  
+**And** the email should include a secure link or instructions to access the report  
+**And** a notification should appear in the CBCI console under “My Reports”
+
+---
+
+**Scenario: Report is deleted after download or expiration**  
+**Given** a manual report has been generated and is available to download  
+**When** the user downloads the report  
+**Then** the report should be deleted from the system  
+**Or When** the report is more than 24 hours old  
+**Then** the system should automatically delete the report and mark it as expired in the UI
+
+---
+
+**Scenario: User views available reports**  
+**Given** I am a CBCI admin user  
+**When** I navigate to the “My Reports” section  
+**Then** I should see a list of my manually created reports  
+**And** each report should show:
+- Report Name
+- Status (e.g., In Progress, Available, Expired)
+- Date/Time of Request  
+**And** if a report is available, I should be able to download it
