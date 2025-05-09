@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Scheduled Report Creation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
+    h2 {
+      margin-top: 2rem;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      box-sizing: border-box;
+    }
+    .form-section {
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: left;
+    }
+    th {
+      background-color: #f8f8f8;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Schedule a Report</h1>
+
+  <form class="form-section">
+    <label for="scheduleName">Schedule Name</label>
+    <input type="text" id="scheduleName" name="scheduleName" />
+
+    <label for="recurrence">Recurrence</label>
+    <select id="recurrence" name="recurrence">
+      <option value="daily">Daily</option>
+      <option value="weekly">Weekly</option>
+      <option value="monthly">Monthly</option>
+    </select>
+
+    <label for="scheduleTime">Time of Day</label>
+    <input type="time" id="scheduleTime" name="scheduleTime" />
+
+    <label for="startDate">Start Date</label>
+    <input type="date" id="startDate" name="startDate" />
+
+    <label for="endDate">End Date (optional)</label>
+    <input type="date" id="endDate" name="endDate" />
+
+    <h2>Report Filters</h2>
+
+    <label for="fromDate">From Date</label>
+    <input type="date" id="fromDate" name="fromDate" />
+
+    <label for="toDate">To Date</label>
+    <input type="date" id="toDate" name="toDate" />
+
+    <label for="wcisId">WCIS ID</label>
+    <input type="text" id="wcisId" name="wcisId" />
+
+    <label for="optimistId">Optimist ID</label>
+    <input type="text" id="optimistId" name="optimistId" />
+
+    <label for="entityName">Entity Name</label>
+    <input type="text" id="entityName" name="entityName" />
+
+    <label for="requestingUserId">Requesting User ID</label>
+    <input type="text" id="requestingUserId" name="requestingUserId" />
+
+    <label for="status">Analysis Status</label>
+    <select id="status" name="status">
+      <option value="">Select status</option>
+      <option value="completed">Completed</option>
+      <option value="in_progress">In Progress</option>
+      <option value="error">Error</option>
+    </select>
+
+    <label for="includeRawJson">
+      <input type="checkbox" id="includeRawJson" name="includeRawJson" />
+      Include Raw JSON from LLM
+    </label>
+
+    <label for="mostRecentRevision">
+      <input type="checkbox" id="mostRecentRevision" name="mostRecentRevision" checked />
+      Include Only Most Recent Revision
+    </label>
+
+    <label for="outputFormat">Output Format</label>
+    <select id="outputFormat" name="outputFormat">
+      <option value="csv">CSV</option>
+      <option value="json">JSON</option>
+    </select>
+
+    <button type="submit">Save Schedule</button>
+  </form>
+
+  <h2>My Scheduled Report Jobs</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Schedule Name</th>
+        <th>Frequency</th>
+        <th>Time</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Daily Optimist Summary</td>
+        <td>Daily</td>
+        <td>06:00</td>
+        <td>2024-05-01</td>
+        <td>2024-12-31</td>
+        <td>Active</td>
+        <td><a href="#">Edit</a> | <a href="#">Deactivate</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
