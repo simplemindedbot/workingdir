@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Report</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-container {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .checkbox-group {
+      margin-top: 1rem;
+    }
+    .checkbox-group label {
+      display: inline-flex;
+      align-items: center;
+      font-weight: normal;
+    }
+    .checkbox-group input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+    .btn-download {
+      display: block;
+      width: 100%;
+      margin-top: 2rem;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-download:hover {
+      background-color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Create Report</h2>
+    <form>
+      <label for="reportName">Report name</label>
+      <input type="text" id="reportName" name="reportName" value="One-time Report" />
+
+      <label for="entityId">Ad hoc extract<br>Entity name / ID</label>
+      <input type="text" id="entityId" name="entityId" value="12345" />
+
+      <label for="requestType">Request type</label>
+      <select id="requestType" name="requestType">
+        <option>Data & analytics</option>
+        <option>Compliance</option>
+        <option>Performance</option>
+      </select>
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" name="wcid" />
+          WCID
+        </label>
+      </div>
+
+      <button type="submit" class="btn-download">IMMEDIATE DOWNLOAD</button>
+    </form>
+  </div>
+</body>
+</html>
