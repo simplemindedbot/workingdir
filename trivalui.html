@@ -32,6 +32,7 @@
       margin-bottom: 0.25rem;
     }
     input[type="text"],
+    input[type="datetime-local"],
     select {
       width: 100%;
       padding: 0.5rem;
@@ -84,6 +85,12 @@
         <option>Compliance</option>
         <option>Performance</option>
       </select>
+
+      <label for="fromDateTime">From Date & Time</label>
+      <input type="datetime-local" id="fromDateTime" name="fromDateTime" />
+
+      <label for="toDateTime">To Date & Time</label>
+      <input type="datetime-local" id="toDateTime" name="toDateTime" />
 
       <div class="checkbox-group">
         <label>
