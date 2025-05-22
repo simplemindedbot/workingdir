@@ -1,0 +1,53 @@
+Here is a focused addition to your Gherkin acceptance criteria, specifying how assertion details should be handled in the CSV format:
+
+⸻
+
+
+## Scenario: Include assertion details as JSON blob in CSV output
+
+**Given** I have selected “CSV” from the Output Format dropdown  
+**And** the report includes one or more assertions per analysis  
+**When** the report is generated  
+**Then** each assertion should be included as a single JSON blob within a **single cell** of the CSV output  
+**And** the JSON blob should contain the following keys for each assertion:  
+- **section**  
+- **metric**  
+- **value_mismatches**  
+- **direction_mismatches**  
+- **direction_value_mismatches**  
+**And** the JSON blob should include **all data fields defined for assertions** as specified in the data dictionary  
+**And** the file must contain exactly **one row per analysis**  
+**And** the CSV output must **not** be flattened to multiple rows for each assertion or metric
+
+---
+
+## Scenario: Assertions are omitted when no assertions are present
+
+**Given** the report includes analyses with no assertions  
+**When** the report is generated in CSV format  
+**Then** the assertion details cell should be present but contain an empty JSON array (`[]`) or `null` as appropriate  
+**And** the structure of the CSV file should remain consistent across all rows
+
+---
+
+## Scenario: JSON blob in CSV is properly escaped and parsable
+
+**Given** assertion data is included as a JSON blob in a CSV cell  
+**When** I open the CSV file in a tool such as Excel or parse it with a CSV reader  
+**Then** the JSON blob must be properly quoted and escaped to ensure that it is read as a valid single field  
+**And** the JSON structure must be valid according to standard JSON syntax
+
+---
+
+## Scenario: JSON blob includes all nested fields per data dictionary
+
+**Given** the report includes complex or nested assertion structures  
+**When** the JSON blob is constructed  
+**Then** all nested values and structures defined in the assertion data schema must be preserved  
+**And** no part of the JSON should be dropped or abbreviated
+
+This ensures clarity for both developers and testers while reinforcing that the CSV remains row-aligned with one analysis per row, and the assertion details are stored compactly as a structured field.
+
+Q1: Would you like a sample JSON blob added as an example in a non-Gherkin section?
+Q2: Should empty fields inside the JSON blob be included as null, omitted, or empty strings?
+Q3: Is the CSV output intended for downstream systems or human inspection, and should formatting take readability into account?
