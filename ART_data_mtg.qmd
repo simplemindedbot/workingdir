@@ -1,0 +1,13 @@
+Absolutely! Here’s the same meeting purpose, formatted as bullet points for clarity and quick reference:
+
+⸻
+
+Meeting Purpose:
+	•	Review the ART data mapping document to ensure it reflects the most current schema and data relationships.
+	•	Confirm Data Science team access to ART data within the WDM environment.
+	•	Identify and address any access issues or technical constraints impacting the Data Science team’s ability to work with ART data.
+	•	Align on next steps to support ongoing and future data-driven initiatives involving ART data.
+
+⸻
+
+Let me know if you want to add attendees, desired outcomes, or pre-reads to this format.
