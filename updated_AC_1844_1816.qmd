@@ -1,0 +1,84 @@
+# Feature: Fixed-period Data Download Report
+
+---
+
+## Scenario: End date is restricted to past dates only
+
+**Given** I am on the "Download Report" screen  
+**When** I open the end date picker  
+**Then** I should only be able to select dates **before today** (i.e., up to yesterday)  
+**And** today's date and all future dates should be disabled or unavailable  
+
+---
+
+## Scenario: Download period must be selected as weekly or monthly
+
+**Given** I am preparing a report for download  
+**When** I select the download period  
+**Then** I must choose one of the following options:
+- "Prior week"
+- "Prior month"
+
+**And** no custom date ranges should be available  
+**And** the report should return data ending at **midnight of the selected end date**
+
+---
+
+## Scenario: Weekly period returns 7 days of data ending at midnight on end date
+
+**Given** I have selected "Prior week" as the period type  
+**And** I have selected a valid end date  
+**When** I click the “Download” button  
+**Then** the report should include data from the **6 days prior to the end date plus the end date itself**  
+**And** data should be inclusive through **11:59:59 PM** of the end date  
+**And** the total range covered should be 7 calendar days
+
+---
+
+## Scenario: Monthly period returns 30 days of data ending at midnight on end date
+
+**Given** I have selected "Prior month" as the period type  
+**And** I have selected a valid end date  
+**When** I click the “Download” button  
+**Then** the report should include data from the **29 days prior to the end date plus the end date itself**  
+**And** data should be inclusive through **11:59:59 PM** of the end date  
+**And** the total range covered should be 30 calendar days
+
+---
+
+## Scenario: Download format selection between CSV and JSON
+
+**Given** I am on the report download screen  
+**When** I open the Output Format dropdown  
+**Then** I should be able to select either:
+- "CSV"
+- "JSON"
+
+**And** the generated file should match the selected format  
+**And** the file should use the appropriate extension (.csv or .json)
+
+---
+
+## Scenario: Most recent revision toggle affects included data
+
+**Given** I have checked the “Include only most recent revision” option  
+**When** I click the “Download” button  
+**Then** the report should include only the latest revision for each analysis  
+**And** all earlier revisions should be excluded
+
+---
+
+## Scenario: All revisions are included when toggle is unchecked
+
+**Given** I have left the “Include only most recent revision” option unchecked  
+**When** I click the “Download” button  
+**Then** the report should include **all available revisions** for each analysis in the specified date range
+
+---
+
+## Scenario: Requesting user is automatically recorded
+
+**Given** I am authenticated and preparing to download a report  
+**When** I click the “Download” button  
+**Then** the requesting user’s identity should be recorded  
+**And** included in the metadata or audit trail associated with the download
