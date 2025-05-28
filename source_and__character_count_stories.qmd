@@ -1,0 +1,24 @@
+# User Story 1: Include Source Count per Analysis in Downstream Report
+
+**Title:** Capture and include the number of sources used in each analysis
+**As a** downstream consumer of analysis reports
+**I want to** include the number of sources used per analysis
+**So that** I can assess the breadth of reference material used by the LLM
+
+## Gherkin Acceptance Criteria
+
+### Scenario: Source count is included in downstream JSON report
+
+**Given** an analysis has been generated
+**And** the analysis includes a list of referenced sources
+**When** the downstream JSON report is generated
+**Then** the report must include a `source_count` field for each analysis
+**And** the value must reflect the number of distinct sources used
+**And** if no sources were used, the value must be `0`
+
+### Scenario: Source count reflects structured metadata
+
+**Given** source data is available from system metadata
+**When** the report is built
+**Then** the source count must be derived from metadata
+**And** must not be inferred from narrative content or manually-entered text
