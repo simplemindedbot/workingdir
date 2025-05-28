@@ -1,84 +1,92 @@
-# Feature: Fixed-period Data Download Report
+# Feature: Zipped JSON Report Download for Custom Date Range
 
 ---
 
-## Scenario: End date is restricted to past dates only
+## Scenario: End date must be before today
 
-**Given** I am on the "Download Report" screen  
-**When** I open the end date picker  
-**Then** I should only be able to select dates **before today** (i.e., up to yesterday)  
-**And** today's date and all future dates should be disabled or unavailable  
-
----
-
-## Scenario: Download period must be selected as weekly or monthly
-
-**Given** I am preparing a report for download  
-**When** I select the download period  
-**Then** I must choose one of the following options:
-- "Prior week"
-- "Prior month"
-
-**And** no custom date ranges should be available  
-**And** the report should return data ending at **midnight of the selected end date**
+**Given** I am on the “Download Report” screen
+**When** I open the end date picker
+**Then** I should only be able to select dates **up to and including yesterday**
+**And** today’s date and all future dates should be disabled or unavailable
 
 ---
 
-## Scenario: Weekly period returns 7 days of data ending at midnight on end date
+## Scenario: Start date must be no more than 30 days before end date
 
-**Given** I have selected "Prior week" as the period type  
-**And** I have selected a valid end date  
-**When** I click the “Download” button  
-**Then** the report should include data from the **6 days prior to the end date plus the end date itself**  
-**And** data should be inclusive through **11:59:59 PM** of the end date  
-**And** the total range covered should be 7 calendar days
-
----
-
-## Scenario: Monthly period returns 30 days of data ending at midnight on end date
-
-**Given** I have selected "Prior month" as the period type  
-**And** I have selected a valid end date  
-**When** I click the “Download” button  
-**Then** the report should include data from the **29 days prior to the end date plus the end date itself**  
-**And** data should be inclusive through **11:59:59 PM** of the end date  
-**And** the total range covered should be 30 calendar days
+**Given** I have selected an end date
+**When** I open the start date picker
+**Then** I should only be able to select a start date that is **no earlier than 30 days before the selected end date**
+**And** the date picker should prevent selection of dates outside this window
+**And** the start date must not be after the end date
 
 ---
 
-## Scenario: Download format selection between CSV and JSON
+## Scenario: Validation error if start date is more than 30 days before end date
 
-**Given** I am on the report download screen  
-**When** I open the Output Format dropdown  
-**Then** I should be able to select either:
-- "CSV"
-- "JSON"
-
-**And** the generated file should match the selected format  
-**And** the file should use the appropriate extension (.csv or .json)
+**Given** I manually enter a start date more than 30 days before the selected end date
+**When** I click the “Download” button
+**Then** I should receive a validation error message indicating that the start date cannot be more than 30 days before the end date
+**And** the report should not be generated
 
 ---
 
-## Scenario: Most recent revision toggle affects included data
+## Scenario: Validation error if end date is today or in the future
 
-**Given** I have checked the “Include only most recent revision” option  
-**When** I click the “Download” button  
-**Then** the report should include only the latest revision for each analysis  
-**And** all earlier revisions should be excluded
+**Given** I manually enter today’s date or a future date into the end date field
+**When** I click the “Download” button
+**Then** I should receive a validation error message indicating that the end date must be before today
+**And** the report should not be generated
 
 ---
 
-## Scenario: All revisions are included when toggle is unchecked
+## Scenario: Report includes data from full inclusive date range
 
-**Given** I have left the “Include only most recent revision” option unchecked  
-**When** I click the “Download” button  
-**Then** the report should include **all available revisions** for each analysis in the specified date range
+**Given** I have selected a valid start and end date within the allowed range
+**When** I click the “Download” button
+**Then** the report should include data from **00:00:00 on the start date**
+**And** include data through **23:59:59 on the end date**
+
+---
+
+## Scenario: Output format is JSON only
+
+**Given** I am on the “Download Report” screen
+**Then** I should not be able to select any format other than **JSON**
+**And** the file generated must conform to standard JSON structure
+**And** the filename should end in `.json` before zipping
+
+---
+
+## Scenario: Report is downloaded as a zipped JSON file
+
+**Given** I have clicked the “Download” button with valid dates
+**Then** the resulting JSON file should be compressed into a `.zip` file
+**And** the downloaded file should have a `.zip` extension
+**And** the unzipped contents should include a single `.json` file containing the report data
+
+---
+
+## Scenario: Include only most recent revision when option is checked
+
+**Given** I have selected a valid date range
+**And** I have checked the “Include only most recent revision” option
+**When** I click the “Download” button
+**Then** the report should include only the latest revision for each analysis in the date range
+
+---
+
+## Scenario: Include all revisions when option is unchecked
+
+**Given** I have selected a valid date range
+**And** I have left the “Include only most recent revision” option unchecked
+**When** I click the “Download” button
+**Then** the report should include **all available revisions** for each analysis in the date range
 
 ---
 
 ## Scenario: Requesting user is automatically recorded
 
-**Given** I am authenticated and preparing to download a report  
-**When** I click the “Download” button  
-**Then** the requesting user’s identity should be recorded  
-**And** included in the metadata or audit trail associated with the download
+**Given** I am authenticated and preparing to download a report
+**When** I click the “Download” button
+**Then** the system should automatically record my user identity
+**And** include that information in the metadata or audit trail for the download
