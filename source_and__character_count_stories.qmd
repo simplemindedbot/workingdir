@@ -22,3 +22,65 @@
 **When** the report is built
 **Then** the source count must be derived from metadata
 **And** must not be inferred from narrative content or manually-entered text
+
+# User Story 2: Include Character Count for Areas of Attention
+
+**Title:** Capture character count for Areas of Attention  
+**As a** reviewer or data consumer  
+**I want to** see the length of the Areas of Attention section  
+**So that** I can monitor consistency, verbosity, and potential red flags in risk analysis content
+
+## Gherkin Acceptance Criteria
+
+### Scenario: Character count excludes HTML and includes spaces
+
+**Given** an analysis includes an "Areas of Attention" section  
+**When** the downstream report is generated  
+**Then** the report must include a field `areas_of_attention_char_count`  
+**And** the character count must:
+- Include all visible characters, including whitespace  
+- Exclude HTML tags, entities, or other formatting code (e.g., `<br>`, `&nbsp;`)
+
+### Scenario: Character count is zero if section is empty
+
+**Given** an analysis has no Areas of Attention  
+**When** the report is generated  
+**Then** the field `areas_of_attention_char_count` must be present  
+**And** its value must be `0`
+
+# User Story 3: Capture Pre- and Post-Edit Character Counts for Financial Analysis
+
+**Title:** Capture Financial Analysis pre- and post-edit character counts  
+**As a** compliance or audit stakeholder  
+**I want to** capture both the original (pre-edit) and finalized (post-edit) character counts  
+**So that** I can evaluate the degree of human intervention and content evolution
+
+## Gherkin Acceptance Criteria
+
+### Scenario: Pre-edit character count reflects original LLM output
+
+**Given** an LLM has generated the Financial Analysis section  
+**When** the analysis is saved or finalized  
+**Then** the report must include a `financial_analysis_char_count_pre_edit` field  
+**And** the count must:
+- Include spaces  
+- Exclude HTML tags and formatting characters  
+- Reflect the original text as generated before any user modifications
+
+### Scenario: Post-edit character count reflects finalized user-edited text
+
+**Given** a user has edited the Financial Analysis section  
+**And** has clicked "Finalize"  
+**When** the report is generated  
+**Then** the report must include a `financial_analysis_char_count_post_edit` field  
+**And** the count must:
+- Include spaces  
+- Exclude formatting and HTML  
+- Reflect the final text version as accepted by the user
+
+### Scenario: Post-edit matches pre-edit if no changes were made
+
+**Given** the user did not edit the Financial Analysis section  
+**And** has finalized the unmodified output  
+**When** the report is generated  
+**Then** the `financial_analysis_char_count_post_edit` value must equal `financial_analysis_char_count_pre_edit`
