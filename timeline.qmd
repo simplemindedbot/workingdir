@@ -1,0 +1,64 @@
+Here is the full .qmd file content, formatted for local use with Quarto. It includes a title, table of contents, and a timeline table:
+
+---
+title: "CBCI PFIX Access Timeline – Incident Summary"
+author: "Scot Campbell"
+date: "2025-06-05"
+format:
+  html:
+    toc: true
+    toc-title: "On This Page"
+    toc-location: left
+    code-fold: true
+    number-sections: true
+  pdf:
+    documentclass: article
+    toc: true
+    toc-depth: 2
+    number-sections: true
+---
+
+## Context
+
+At 9:07 AM on June 5, 2025, I was contacted by Justin with a request to pull a report from the PFIX environment related to the CBCI project. At that time, I did not have direct access to the PFIX environment.
+
+## Timeline of Actions
+
+| Time (ET)     | Event |
+|---------------|-------|
+| **9:07 AM**   | Justin requested a PFIX-based report. |
+| **9:09 AM**   | I replied to Justin stating I did not currently have PFIX access. |
+| **9:10 AM**   | I messaged Jothi to ask about access requirements for PFIX. |
+| **9:17 AM**   | I contacted Sharath to ask if he had a PFIX connection string. He shared a connection string using the CBCI service account. *(This exchange will be included.)* |
+| **~9:20 AM**  | I used the service account credentials solely to verify connectivity to the PFIX environment. No queries were run or data accessed beyond the basic connection. |
+| **9:26 AM**   | I informed the UAT channel that I had PFIX access via the service account, and I notified both Justin and Jothi. |
+| **9:30 AM**   | I attempted to connect to PFIX using my own user credentials. The connection succeeded, but I could not view any databases. |
+| **9:35 AM**   | Justin advised me not to use the service account and to wait for my user ID to be provisioned. I disconnected immediately and ceased any further access. |
+| **9:41 AM**   | I followed up with Jothi to ask how to proceed in getting my ID added with read-only access. He informed me that read-only access was not available in PFIX. |
+| **9:44 AM**   | Justin advised me to stand down from the entire PFIX reporting request. No further access was attempted. |
+| **9:55 AM**   | Sharath contacted me by phone to let me know that the credential sharing incident had been escalated to Nilesh and Manish within his management chain. |
+
+## Key Points for Clarity
+
+- I did not request credentials; I inquired whether a connection string was available.  
+- I used the shared service account credentials only to verify connectivity.  
+- I notified Justin and the broader team promptly once access was confirmed.  
+- As soon as I was advised not to use the service account, I disconnected and stopped all further activity.  
+- I attempted to pursue appropriate access through my own credentials after that.  
+- I made no attempt to mask or conceal any part of this process and kept communication open throughout.  
+
+## Going Forward
+
+To prevent any recurrence of confusion or improper access:
+- I will not use service accounts or shared credentials unless explicitly approved by both the system owner and my manager.
+- Any environment access requests will be routed through the appropriate security provisioning process (e.g., SailPoint or manual ticketing).
+- I will clarify and document access boundaries in future cases where I’m uncertain.
+
+Let me know if you want:
+	•	A version that renders well in PDF
+	•	An embedded appendix with transcript snippets
+	•	A more formal incident report version for documentation or HR use
+
+Q1: Would it help to include an appendix for transcripts and Slack/Teams message excerpts?
+Q2: Should I draft a standalone summary email to Justin using this as an attachment?
+Q3: Do you want a redacted version you can share if asked by others (e.g., Jothi, Sharath)?
